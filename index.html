@@ -1,647 +1,1045 @@
-<!doctype html>
+﻿<!DOCTYPE html>
 <html lang="hu">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Instant Print – Rendezvény szolgáltatás (B2B)</title>
-  <meta name="description" content="Prémium, azonnali fotónyomtatás rendezvényekre – esküvő, céges esemény, bál. Ajánlatkérés 2 perc alatt." />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BetűKaland - hiányzó betű</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
   <style>
-    :root{
-      --bg:#0b0f19;
-      --card:#111827;
-      --muted:#94a3b8;
-      --text:#e5e7eb;
-      --brand:#22c55e;
-      --brand2:#60a5fa;
-      --border:rgba(148,163,184,.18);
-      --shadow: 0 18px 50px rgba(0,0,0,.45);
-      --radius:18px;
-      --max:1120px;
+    :root {
+      --primary: #4DA6FF;
+      --primary-strong: #1E88E5;
+      --ok: #4CD964;
+      --bad: #FF4D4F;
+      --bg1: #F3F8FF;
+      --bg2: #EAF4FF;
+      --cloud-bg: url("./background.png");
+      --card: #FFFFFF;
+      --text: #173E5D;
+      --muted: #4F6A81;
+      --shadow: 0 14px 34px rgba(5, 52, 89, 0.14);
     }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Helvetica Neue";
-      background: radial-gradient(900px 600px at 20% 0%, rgba(96,165,250,.18), transparent 55%),
-                  radial-gradient(900px 600px at 90% 20%, rgba(34,197,94,.18), transparent 55%),
-                  var(--bg);
-      color:var(--text);
-      line-height:1.5;
+
+    * { box-sizing: border-box; }
+
+    html {
+      margin: 0;
+      min-height: 100%;
+      background-color: var(--bg1);
+      background-image: linear-gradient(to bottom, var(--bg1), var(--bg2)), var(--cloud-bg);
+      background-repeat: no-repeat, repeat;
+      background-size: cover, auto;
+      background-position: center top, left top;
     }
-    a{color:inherit; text-decoration:none}
-    .container{max-width:var(--max); margin:0 auto; padding:0 20px}
-    .nav{
-      position:sticky; top:0; z-index:50;
-      backdrop-filter: blur(10px);
-      background: rgba(11,15,25,.65);
-      border-bottom:1px solid var(--border);
+
+    body {
+      margin: 0;
+      min-height: 100%;
+      font-family: "Nunito", "Segoe UI", sans-serif;
+      color: var(--text);
+      background: transparent;
     }
-    .nav-inner{display:flex; align-items:center; justify-content:space-between; padding:14px 0}
-    .brand{display:flex; align-items:center; gap:12px; font-weight:800; letter-spacing:.2px}
-    .logo{
-      width:38px; height:38px; border-radius:12px;
-      background: conic-gradient(from 210deg, var(--brand), var(--brand2), #a78bfa, var(--brand));
-      box-shadow: 0 10px 35px rgba(34,197,94,.18);
-    }
-    .menu{display:flex; gap:18px; align-items:center}
-    .menu a{color:var(--muted); font-weight:600}
-    .menu a:hover{color:var(--text)}
-    .btn{
-      display:inline-flex; align-items:center; justify-content:center;
-      padding:10px 14px; border-radius:14px;
-      border:1px solid var(--border);
-      background: rgba(255,255,255,.04);
-      color:var(--text); font-weight:700;
-      transition: transform .08s ease, background .2s ease, border-color .2s ease;
-      cursor:pointer;
-    }
-    .btn:hover{background: rgba(255,255,255,.07); border-color: rgba(148,163,184,.35)}
-    .btn:active{transform: translateY(1px)}
-    .btn.primary{
-      border:none;
-      background: linear-gradient(135deg, var(--brand), var(--brand2));
-      color:#071018;
-      box-shadow: 0 14px 40px rgba(96,165,250,.22);
-    }
-    .btn.primary:hover{filter:brightness(1.04)}
-    .hamburger{display:none; width:44px; height:40px; border-radius:14px}
-    .hamburger svg{width:22px; height:22px}
-    .mobile-panel{
-      display:none;
-      padding:12px 0 16px;
-      border-top:1px solid var(--border);
-    }
-    .mobile-panel a{display:block; padding:10px 0; color:var(--muted); font-weight:700}
-    .mobile-panel a:hover{color:var(--text)}
-    /* Hero */
-    .hero{padding:56px 0 22px}
-    .hero-grid{
-      display:grid;
-      grid-template-columns: 1.15fr .85fr;
-      gap:28px;
-      align-items:stretch;
-    }
-    .pill{
-      display:inline-flex; align-items:center; gap:10px;
-      padding:8px 12px; border-radius:999px;
-      border:1px solid var(--border);
-      background: rgba(255,255,255,.04);
-      color:var(--muted);
-      font-weight:700;
-      width:fit-content;
-    }
-    .pill b{color:var(--text)}
-    h1{margin:14px 0 10px; font-size: clamp(28px, 4vw, 48px); line-height:1.08; letter-spacing:-.6px}
-    .lead{color:var(--muted); font-size: clamp(15px, 1.8vw, 18px); margin:0 0 18px}
-    .hero-cta{display:flex; gap:12px; flex-wrap:wrap; margin-top:10px}
-    .hero-card{
-      border:1px solid var(--border);
-      background: rgba(17,24,39,.62);
-      border-radius: var(--radius);
-      padding:18px;
+
+    .app {
+      width: min(1160px, 96vw);
+      margin: 18px auto;
+      border-radius: 42px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(235,247,255,0.95));
+      border: 12px solid rgba(230, 245, 255, 0.95);
       box-shadow: var(--shadow);
-      position:relative;
-      overflow:hidden;
+      padding: 14px;
     }
-    .hero-card:before{
-      content:"";
-      position:absolute; inset:-2px;
-      background: radial-gradient(420px 260px at 10% 5%, rgba(96,165,250,.22), transparent 60%),
-                  radial-gradient(420px 260px at 90% 15%, rgba(34,197,94,.22), transparent 60%);
-      pointer-events:none;
-      opacity:.8;
+
+    .stage-card {
+      border-radius: 34px;
+      background: linear-gradient(180deg, #BFE6FF 0%, #E8F6FF 38%, #DDF1FF 100%);
+      border: 3px solid #9FD7FA;
+      padding: 16px;
+      display: grid;
+      gap: 14px;
+      box-shadow: inset 0 2px 0 rgba(255,255,255,0.7);
     }
-    .hero-card > *{position:relative}
-    .stat-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:14px}
-    .stat{
-      border:1px solid var(--border);
-      border-radius:16px;
-      padding:12px;
-      background: rgba(255,255,255,.03);
+
+    .badges {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 14px;
+      align-items: center;
     }
-    .stat .k{font-weight:900; font-size:18px}
-    .stat .s{color:var(--muted); font-weight:700; font-size:12px; margin-top:2px}
-    /* Sections */
-    section{padding:26px 0}
-    .section-title{
-      display:flex; align-items:flex-end; justify-content:space-between; gap:18px; flex-wrap:wrap;
-      margin-bottom:14px;
+
+    .badge {
+      padding: 10px 18px;
+      font-weight: 800;
+      font-size: 17px;
+      color: #0E4E82;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 104px;
+      border: none;
+      box-shadow: none;
+      overflow: visible;
     }
-    .section-title h2{margin:0; font-size:22px; letter-spacing:-.2px}
-    .section-title p{margin:0; color:var(--muted); max-width:68ch}
-    .grid-3{display:grid; grid-template-columns:repeat(3,1fr); gap:14px}
-    .grid-2{display:grid; grid-template-columns:repeat(2,1fr); gap:14px}
-    .card{
-      border:1px solid var(--border);
-      background: rgba(17,24,39,.55);
-      border-radius: var(--radius);
-      padding:16px;
+
+    #level-badge {
+      background-image: url("./status_buttons.png");
+      background-repeat: no-repeat;
+      background-size: 166% 392%;
+      background-position: 49% 12%;
+      padding-left: 124px;
+      padding-right: 44px;
+      color: #1a4d85;
     }
-    .card h3{margin:0 0 6px; font-size:16px}
-    .card p{margin:0; color:var(--muted)}
-    .icon{
-      width:40px; height:40px; border-radius:14px;
-      display:grid; place-items:center;
-      background: rgba(255,255,255,.05);
-      border:1px solid var(--border);
-      margin-bottom:10px;
+
+    #score-badge {
+      background-image: url("./status_buttons.png");
+      background-repeat: no-repeat;
+      background-size: 164% 401%;
+      background-position: 49% 12%;
+      padding-left: 124px;
+      padding-right: 44px;
+      color: #684f16;
     }
-    .icon svg{width:20px; height:20px; opacity:.95}
-    /* Pricing */
-    .pricing{display:grid; grid-template-columns:repeat(3,1fr); gap:14px}
-    .price{
-      position:relative;
-      overflow:hidden;
+
+    #streak-badge {
+      background-image: url("./status_buttons.png");
+      background-repeat: no-repeat;
+      background-size: 164% 401%;
+      background-position: 49% 12%;
+      padding-left: 124px;
+      padding-right: 44px;
+
+      color: #684f16;
     }
-    .price.featured{
-      border-color: rgba(96,165,250,.45);
-      box-shadow: 0 18px 70px rgba(96,165,250,.15);
+
+    #score-badge { background-position: 48% 50%; }
+    #streak-badge { background-position: 48% 85%; }
+
+    .badge .status-text {
+      font-size: clamp(24px, 2.2vw, 34px);
+      font-weight: 900;
+      text-shadow: 0 1px 0 rgba(255,255,255,0.45);
+      line-height: 1;
     }
-    .badge{
-      position:absolute; top:14px; right:14px;
-      padding:6px 10px; border-radius:999px;
-      font-weight:900; font-size:12px;
-      background: rgba(96,165,250,.18);
-      border:1px solid rgba(96,165,250,.35);
-      color:#cfe6ff;
+
+    .asset-img {
+      width: 22px;
+      height: 22px;
+      object-fit: contain;
+      display: inline-block;
+      vertical-align: middle;
+      flex: 0 0 auto;
     }
-    .money{font-size:26px; font-weight:900; letter-spacing:-.2px; margin:10px 0 2px}
-    ul{margin:10px 0 0; padding:0 0 0 18px; color:var(--muted)}
-    li{margin:6px 0}
-    /* Calculator + form */
-    .form{
-      display:grid; grid-template-columns: 1fr 1fr; gap:14px;
+
+    .asset-fallback {
+      font-size: 22px;
+      line-height: 1;
+      display: inline-block;
     }
-    label{display:block; font-size:12px; color:var(--muted); font-weight:800; margin:6px 0}
-    input,select,textarea{
-      width:100%;
-      padding:12px 12px;
-      border-radius:14px;
-      border:1px solid var(--border);
-      background: rgba(255,255,255,.03);
-      color:var(--text);
-      outline:none;
+
+    .asset-fallback.hidden {
+      display: none;
     }
-    textarea{min-height:120px; resize:vertical}
-    .calc-out{
-      border:1px dashed rgba(148,163,184,.35);
-      border-radius:16px;
-      padding:14px;
-      background: rgba(255,255,255,.02);
+
+    .word-row {
+      display: grid;
+      grid-template-columns: minmax(180px, 230px) 1fr;
+      gap: 12px;
+      align-items: stretch;
     }
-    .calc-out b{font-size:18px}
-    .foot{
-      padding:26px 0 40px;
-      color:var(--muted);
-      border-top:1px solid var(--border);
-      margin-top:18px;
-      font-size:13px;
+
+    .illustration-box {
+      background: linear-gradient(180deg, #EAF6FF, #D8EEFF);
+      border-radius: 28px;
+      padding: 22px;
+      text-align: center;
+      border: 2px solid #C9E6FF;
+      box-shadow: inset 0 4px 10px rgba(0,0,0,0.04);
+      color: var(--muted);
+      display: grid;
+      background-position: 10%, 10%;
+      place-items: center;
+      overflow: hidden;
     }
-    .split{
-      display:grid; grid-template-columns: 1fr 1fr; gap:14px; align-items:start;
+
+    .illustration-box .icon {
+      font-size: 40px;
+      line-height: 1;
+      display: block;
+      margin-bottom: 8px;
     }
-    .tiny{font-size:12px; color:var(--muted)}
-    .hr{height:1px; background:var(--border); margin:10px 0}
-    /* Responsive */
-    @media (max-width: 920px){
-      .hero-grid{grid-template-columns: 1fr}
-      .pricing{grid-template-columns: 1fr}
-      .grid-3{grid-template-columns: 1fr}
-      .grid-2{grid-template-columns: 1fr}
-      .form{grid-template-columns: 1fr}
-      .split{grid-template-columns:1fr}
-      .stat-grid{grid-template-columns:1fr}
-      .menu{display:none}
-      .hamburger{display:inline-flex}
-      .mobile-panel{display:none}
-      .mobile-panel.open{display:block}
+
+    .illustration-box .asset-img {
+      width: min(180px, 40vw);
+      height: auto;
+      margin-bottom: 8px;
+      transform: scale(1.3);
+      transform-origin: center center;
+    }
+
+    .word {
+      border-radius: 28px;
+      border: 2px solid #D3EAFB;
+      background: linear-gradient(180deg, #FCFEFF, #F2F9FF);
+      min-height: 170px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: clamp(56px, 11vw, 86px);
+      font-weight: 900;
+      letter-spacing: 4px;
+      text-align: center;
+      overflow-wrap: anywhere;
+      padding: 8px;
+    }
+
+    #missing-letter {
+      color: var(--primary-strong);
+      text-decoration: underline;
+      text-decoration-thickness: 4px;
+      min-width: 1.1em;
+      display: inline-block;
+      animation: pulse 1.2s ease-in-out infinite;
+    }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .letter-button {
+      font-size: clamp(40px, 8vw, 52px);
+      font-weight: 900;
+      border: 0;
+      border-radius: 30px;
+      padding: 24px 0;
+      color: #fff;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.35), rgba(255,255,255,0.0) 38%),
+        linear-gradient(180deg, #4ec2ff 0%, #2799f2 48%, #1578d6 100%);
+      border: 3px solid #77cfff;
+      box-shadow:
+        inset 0 2px 0 rgba(255,255,255,0.55),
+        inset 0 -3px 0 rgba(9,95,170,0.35),
+        0 10px 18px rgba(0,0,0,0.14);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      min-height: 112px;
+    }
+
+    .letter-button:hover,
+    .letter-button:focus-visible {
+      transform: translateY(-4px) scale(1.01);
+      box-shadow:
+        inset 0 2px 0 rgba(255,255,255,0.55),
+        inset 0 -3px 0 rgba(9,95,170,0.35),
+        0 14px 24px rgba(0,0,0,0.17);
+      outline: none;
+    }
+
+    .letter-button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    }
+
+    .letter-button.correct { background: var(--ok) !important; }
+    .letter-button.wrong { background: var(--bad) !important; }
+
+    #feedback {
+      min-height: 30px;
+      text-align: center;
+      font-size: clamp(24px, 3.2vw, 52px);
+      font-weight: 800;
+      color: #1B4E77;
+    }
+
+    .feedback-good { color: var(--ok) !important; }
+    .feedback-bad { color: var(--bad) !important; }
+
+    .progress-wrap {
+      border: 2px solid #D0E7FA;
+      background: linear-gradient(180deg, #F6FCFF, #EAF6FF);
+      border-radius: 24px;
+      padding: 10px 12px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .progress-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      font-weight: 900;
+      color: #174265;
+      margin-bottom: 2px;
+      font-size: 24px;
+    }
+
+    .progress-bar {
+      height: 22px;
+      border-radius: 10px;
+      background: #E6F2FF;
+      overflow: hidden;
+      border: 2px solid #CFE6FF;
+    }
+
+    .progress-fill {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(135deg, #4CD964, #1E88E5);
+      transition: width 0.25s ease;
+    }
+
+    .controls {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+    }
+
+    .picker, .control {
+      border-radius: 999px;
+      border: 2px solid #BDD9F3;
+      background: linear-gradient(180deg, #F7FDFF, #E0F2FF);
+      color: #0A4F84;
+      font-size: 16px;
+      font-weight: 800;
+      padding: 14px 16px;
+      min-height: 74px;
+    }
+
+    .picker {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 18px;
+    }
+
+    .picker select {
+      border: 1px solid #98C8EF;
+      border-radius: 999px;
+      background: #fff;
+      color: #0A4F84;
+      font-size: 16px;
+      font-weight: 700;
+      padding: 8px 14px;
+    }
+
+    .badge.mode-hidden {
+      display: none;
+    }
+
+    .control { cursor: pointer; }
+    .control:hover,
+    .control:focus-visible { background: #E2F1FF; outline: none; }
+    .control:disabled { opacity: 0.55; cursor: not-allowed; }
+
+    .confetti {
+      position: fixed;
+      width: 10px;
+      height: 14px;
+      border-radius: 2px;
+      top: -20px;
+      z-index: 9999;
+      animation: fall linear forwards;
+      pointer-events: none;
+    }
+
+    .shake { animation: shake 0.45s ease; }
+    .word-pop { animation: pop 0.28s ease; }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(7, 33, 53, 0.4);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 10000;
+    }
+
+    .modal.show { display: flex; }
+
+    .modal-card {
+      width: min(420px, 92vw);
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      padding: 18px;
+      text-align: center;
+    }
+
+    .modal-card h2 { margin: 0 0 8px; font-size: 26px; }
+    .modal-card p { margin: 8px 0; color: #285075; font-size: 18px; font-weight: 700; }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes shake {
+      0% { transform: translateX(0); }
+      25% { transform: translateX(-6px); }
+      50% { transform: translateX(6px); }
+      75% { transform: translateX(-5px); }
+      100% { transform: translateX(0); }
+    }
+
+    @keyframes pop {
+      0% { transform: scale(1); }
+      60% { transform: scale(1.2); }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes fall {
+      to { transform: translateY(110vh) rotate(720deg); opacity: 0.9; }
+    }
+
+    .advanced-panel {
+      margin-top: 2px;
+    }
+
+    .advanced-panel summary {
+      cursor: pointer;
+      color: #1E5D90;
+      font-weight: 700;
+      font-size: 14px;
+      text-align: center;
+      list-style: none;
+      user-select: none;
+    }
+
+    .advanced-panel summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .advanced-controls {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+      opacity: 0.82;
+      margin-top: 8px;
+    }
+
+    @media (max-width: 980px) {
+      .word-row { grid-template-columns: 1fr; }
+      .feedback { font-size: 32px; }
+      .badges { grid-template-columns: 1fr; }
+      .controls { grid-template-columns: 1fr; }
+      .buttons { grid-template-columns: 1fr; }
+      .progress-top { justify-content: center; }
+      .advanced-controls { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
-  <header class="nav">
-    <div class="container">
-      <div class="nav-inner">
-        <a class="brand" href="#top" aria-label="Kezdőlap">
-          <span class="logo" aria-hidden="true"></span>
-          <span>Instant Print <span style="color:var(--muted); font-weight:800">| B2B</span></span>
-        </a>
-
-        <nav class="menu" aria-label="Fő navigáció">
-          <a href="#how">Hogyan működik</a>
-          <a href="#csomagok">Csomagok</a>
-          <a href="#kalkulator">Kalkulátor</a>
-          <a href="#kapcsolat">Kapcsolat</a>
-          <a class="btn primary" href="#kapcsolat">Ajánlatot kérek</a>
-        </nav>
-
-        <button class="btn hamburger" id="hamburger" aria-label="Menü megnyitása" aria-expanded="false">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M4 6h16M4 12h16M4 18h16"></path>
-          </svg>
-        </button>
+  <main class="app" aria-live="polite">
+    <section class="stage-card">
+    <header class="badges">
+      <div class="badge" id="level-badge">
+        <span id="level-badge-text" class="status-text">1. osztály</span>
       </div>
-
-      <div class="mobile-panel" id="mobilePanel" aria-label="Mobil menü">
-        <a href="#how">Hogyan működik</a>
-        <a href="#csomagok">Csomagok</a>
-        <a href="#kalkulator">Kalkulátor</a>
-        <a href="#kapcsolat">Kapcsolat</a>
-        <a class="btn primary" href="#kapcsolat" style="width:100%; margin-top:6px">Ajánlatot kérek</a>
+      <div class="badge" id="score-badge">
+        <span id="score-badge-text" class="status-text">0 pont</span>
       </div>
-    </div>
-  </header>
+      <div class="badge" id="streak-badge">
+        <span id="streak-badge-text" class="status-text">0 sorozat</span>
+      </div>
+      <div class="badge mode-hidden" id="mode-badge">Mód: Játék</div>
+    </header>
 
-  <main id="top">
-    <div class="container">
-      <section class="hero">
-        <div class="hero-grid">
-          <div>
-            <div class="pill">
-              <span>📸</span>
-              <span><b>Prémium vendégélmény</b> azonnali nyomtatással</span>
-            </div>
-            <h1>Azonnali fotónyomtatás rendezvényekre – kézbe adható emlék <span style="background:linear-gradient(135deg,var(--brand),var(--brand2)); -webkit-background-clip:text; background-clip:text; color:transparent;">1 perc alatt</span>.</h1>
-            <p class="lead">
-              Esküvőre, céges eseményre, bálra, promóra: professzionális fotózás + helyszíni nyomtatás,
-              egyedi kerettel (dátum, logó, eseménynév). A vendégek már a buli alatt hazaviszik az emléket.
-            </p>
-            <div class="hero-cta">
-              <a class="btn primary" href="#kapcsolat">Ajánlatot kérek</a>
-              <a class="btn" href="#csomagok">Csomagok megtekintése</a>
-              <a class="btn" href="#kalkulator">Gyors kalkulátor</a>
-            </div>
-            <div class="stat-grid" aria-label="Gyors tények">
-              <div class="stat">
-                <div class="k">0–1 perc</div>
-                <div class="s">fotó → nyomat</div>
-              </div>
-              <div class="stat">
-                <div class="k">Brandelt keret</div>
-                <div class="s">logo / dátum / név</div>
-              </div>
-              <div class="stat">
-                <div class="k">QR a galériához</div>
-                <div class="s">digitális + papír</div>
-              </div>
-            </div>
-          </div>
-
-          <aside class="hero-card" aria-label="Rövid összefoglaló kártya">
-            <h3 style="margin:0 0 8px; letter-spacing:-.2px">Kinek ajánlott?</h3>
-            <p style="margin:0; color:var(--muted)">
-              Rendezvényszervezőknek, HR/marketing csapatoknak, esküvői pároknak – akik a vendégeknek
-              <b>azonnali, kézbe adható emléket</b> akarnak, minimális helyigénnyel.
-            </p>
-            <div class="hr"></div>
-            <div class="tiny"><b>Helyigény:</b> ~1×1 m &nbsp;•&nbsp; <b>Áram:</b> 1 konnektor &nbsp;•&nbsp; <b>Fizetés:</b> szerződés + számla</div>
-            <div class="hr"></div>
-            <a class="btn primary" href="#kapcsolat" style="width:100%; margin-top:6px">Szabad időpontok →</a>
-            <div class="tiny" style="margin-top:10px">Tipp: ha nagy a vendégszám, duplázzuk a nyomtatót/asszisztenst.</div>
-          </aside>
-        </div>
+    <section class="word-row">
+      <section class="illustration-box" aria-label="Illusztráció helye">
+        <img class="asset-img" src="./konyv.png" alt="Illusztráció" data-fallback-id="illustration-fallback">
       </section>
 
-      <section id="how">
-        <div class="section-title">
-          <h2>Hogyan működik</h2>
-          <p>Gyors, “megállíthatatlan” flow: a fő szolgáltatás a fotózás, a nyomtatás pedig prémium élmény réteg.</p>
-        </div>
-
-        <div class="grid-3">
-          <div class="card">
-            <div class="icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M4 7h16M6 7l1-3h10l1 3M6 7v13h12V7"></path>
-              </svg>
-            </div>
-            <h3>1) Fotózás</h3>
-            <p>Pro fényképezés eseményhez igazítva: pillanatok, csoportképek, “kérések”.</p>
-          </div>
-
-          <div class="card">
-            <div class="icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M12 20l9-16H3l9 16z"></path>
-              </svg>
-            </div>
-            <h3>2) Gyors válogatás</h3>
-            <p>Helyszíni workflow: “best-of” képek azonnal nyomtatásra mennek (vendor/host igény szerint).</p>
-          </div>
-
-          <div class="card">
-            <div class="icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M6 9V4h12v5M6 18h12v2H6z"></path>
-                <path d="M7 14h10M8 12h8"></path>
-              </svg>
-            </div>
-            <h3>3) Nyomtatás + átadás</h3>
-            <p>Egyedi keret (logo/dátum) + QR a digitális galériához. A vendégek hazaviszik a nyomatot.</p>
-          </div>
-        </div>
+      <section class="word" aria-label="Aktuális szó">
+        <span id="word-prefix"></span><span id="missing-letter">_</span><span id="word-suffix"></span>
       </section>
+    </section>
 
-      <section id="csomagok">
-        <div class="section-title">
-          <h2>Csomagok (példa)</h2>
-          <p>Az alábbiak irányárak/struktúra. Pontos ajánlat: dátum, helyszín, időtartam, vendégszám, nyomatkvóta alapján.</p>
-        </div>
+    <section class="buttons" aria-label="Betű választása">
+      <button id="btn-j" class="letter-button" type="button">j</button>
+      <button id="btn-ly" class="letter-button" type="button">ly</button>
+    </section>
 
-        <div class="pricing">
-          <div class="card price">
-            <h3>Basic</h3>
-            <div class="money">2 óra</div>
-            <p class="tiny">Kisebb eseményekre / gyors élmény</p>
-            <ul>
-              <li>Fotózás + instant print stand</li>
-              <li>50 db nyomat benne</li>
-              <li>Egyedi keret (név + dátum)</li>
-              <li>Extra nyomat: helyszínen</li>
-            </ul>
-            <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap">
-              <a class="btn" href="#kalkulator">Becslés</a>
-              <a class="btn primary" href="#kapcsolat">Ajánlat</a>
-            </div>
-          </div>
+    <section id="feedback">Melyik betű hiányzik?</section>
 
-          <div class="card price featured">
-            <div class="badge">Legnépszerűbb</div>
-            <h3>Standard</h3>
-            <div class="money">4 óra</div>
-            <p class="tiny">Esküvő / céges buli / bál</p>
-            <ul>
-              <li>100–150 db nyomat benne</li>
-              <li>Brandelt keret (logo + szöveg)</li>
-              <li>QR kód a galériához</li>
-              <li>Prioritás: csoportképek</li>
-            </ul>
-            <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap">
-              <a class="btn" href="#kalkulator">Becslés</a>
-              <a class="btn primary" href="#kapcsolat">Ajánlat</a>
-            </div>
-          </div>
+    <section class="progress-wrap">
+      <div class="progress-top">
+        <span id="score">⭐ Pontjaid: 0 / 10</span>
+        <span id="progress">Kérdés: 0/10</span>
+        <span id="combo">Hibátlan sorozat: 0</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+    </section>
 
-          <div class="card price">
-            <h3>Pro</h3>
-            <div class="money">6 óra+</div>
-            <p class="tiny">Nagy vendégszám / fesztivál / kiállítás</p>
-            <ul>
-              <li>200+ nyomat vagy “korlátlan” kvóta</li>
-              <li>2. nyomtató / asszisztens opció</li>
-              <li>Host branding + szponzor elemek</li>
-              <li>Külön “fotósarok” fényekkel (opció)</li>
-            </ul>
-            <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap">
-              <a class="btn" href="#kalkulator">Becslés</a>
-              <a class="btn primary" href="#kapcsolat">Ajánlat</a>
-            </div>
-          </div>
-        </div>
+    <section class="controls">
+      <label class="picker" for="level-select">Évfolyam:
+        <select id="level-select" aria-label="Évfolyam kiválasztása"></select>
+      </label>
+      <button id="new-round-btn" class="control" type="button">Új kör (10 szó)</button>
+      <button id="back-to-game-btn" class="control" type="button" disabled>Vissza játékhoz</button>
+    </section>
+
+    <details class="advanced-panel">
+      <summary>Továbbiak</summary>
+      <section class="advanced-controls">
+        <label class="picker" for="age-mode-select">Korcsoport:
+          <select id="age-mode-select" aria-label="Korcsoport kiválasztása">
+            <option value="kids">6-8 év</option>
+            <option value="teens">10-14 év</option>
+          </select>
+        </label>
+        <button id="quiz-btn" class="control" type="button">Kvíz indítása</button>
+        <button id="reset-storage-btn" class="control" type="button">Mentés törlése</button>
       </section>
-
-      <section id="kalkulator">
-        <div class="section-title">
-          <h2>Gyors árbecslés (nem kötelező)</h2>
-          <p>Ez csak irányszámot ad. A végső árat a helyszín, a vendégszám és a kívánt élmény-szint határozza meg.</p>
-        </div>
-
-        <div class="split">
-          <div class="card">
-            <h3 style="margin-top:0">Kalkulátor</h3>
-            <div class="form" style="margin-top:6px">
-              <div>
-                <label for="eventType">Esemény típusa</label>
-                <select id="eventType">
-                  <option value="wedding">Esküvő</option>
-                  <option value="corporate">Céges esemény</option>
-                  <option value="prom">Bál / szalagavató</option>
-                  <option value="festival">Fesztivál / kiállítás</option>
-                </select>
-              </div>
-              <div>
-                <label for="hours">Időtartam (óra)</label>
-                <select id="hours">
-                  <option value="2">2</option>
-                  <option value="4" selected>4</option>
-                  <option value="6">6</option>
-                  <option value="8">8</option>
-                </select>
-              </div>
-              <div>
-                <label for="guests">Várható vendégszám</label>
-                <input id="guests" type="number" min="10" value="120" />
-              </div>
-              <div>
-                <label for="prints">Tervezett nyomat darabszám</label>
-                <input id="prints" type="number" min="0" value="120" />
-              </div>
-              <div>
-                <label for="branding">Brandelt keret (logo)</label>
-                <select id="branding">
-                  <option value="0">Nem</option>
-                  <option value="1" selected>Igen</option>
-                </select>
-              </div>
-              <div>
-                <label for="assistant">Asszisztens / extra nyomtató</label>
-                <select id="assistant">
-                  <option value="0" selected>Nem</option>
-                  <option value="1">Igen</option>
-                </select>
-              </div>
-            </div>
-
-            <div style="display:flex; gap:10px; margin-top:14px; flex-wrap:wrap">
-              <button class="btn primary" type="button" id="calcBtn">Becslés számítása</button>
-              <a class="btn" href="#kapcsolat">Kérek pontos ajánlatot</a>
-            </div>
-
-            <p class="tiny" style="margin:12px 0 0">
-              *Becslés logika a fájlban egyszerű, könnyen átírható.
-            </p>
-          </div>
-
-          <div class="card">
-            <h3 style="margin-top:0">Eredmény</h3>
-            <div class="calc-out" id="calcOut">
-              <div class="tiny">Becslés (nettó/bruttó nélkül):</div>
-              <div style="margin-top:6px"><b id="priceRange">—</b></div>
-              <div class="tiny" id="priceDetails" style="margin-top:8px"></div>
-            </div>
-            <div class="hr"></div>
-            <div class="tiny">
-              <b>Mitől változhat?</b> utazás/parkolás, helyszíni korlátozások, kívánt nyomat-minőség,
-              extra fények, több pult, szerződéses feltételek.
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="kapcsolat">
-        <div class="section-title">
-          <h2>Ajánlatkérés / kapcsolat</h2>
-          <p>Írd meg a dátumot és a helyszínt – visszajelzünk röviden, konkrétan. (Ezt a formot könnyen ráköthetitek bármilyen backend/email szolgáltatásra.)</p>
-        </div>
-
-        <div class="card">
-          <form onsubmit="return fakeSubmit(event)" aria-label="Ajánlatkérő űrlap">
-            <div class="form">
-              <div>
-                <label for="name">Név</label>
-                <input id="name" name="name" required placeholder="Pl. Kiss Anna" />
-              </div>
-              <div>
-                <label for="email">Email</label>
-                <input id="email" name="email" type="email" required placeholder="anna@email.hu" />
-              </div>
-              <div>
-                <label for="phone">Telefon (opcionális)</label>
-                <input id="phone" name="phone" placeholder="+36 ..." />
-              </div>
-              <div>
-                <label for="date">Dátum</label>
-                <input id="date" name="date" type="date" required />
-              </div>
-              <div>
-                <label for="location">Helyszín / város</label>
-                <input id="location" name="location" required placeholder="Budapest / ..." />
-              </div>
-              <div>
-                <label for="etype">Esemény típusa</label>
-                <select id="etype" name="etype">
-                  <option>Esküvő</option>
-                  <option>Céges esemény</option>
-                  <option>Bál / szalagavató</option>
-                  <option>Fesztivál / kiállítás</option>
-                  <option>Más</option>
-                </select>
-              </div>
-              <div>
-                <label for="duration">Időtartam</label>
-                <select id="duration" name="duration">
-                  <option>2 óra</option>
-                  <option selected>4 óra</option>
-                  <option>6 óra</option>
-                  <option>8 óra</option>
-                </select>
-              </div>
-              <div>
-                <label for="pax">Várható vendégszám</label>
-                <input id="pax" name="pax" type="number" min="0" placeholder="Pl. 120" />
-              </div>
-              <div>
-                <label for="notes">Megjegyzés</label>
-                <textarea id="notes" name="notes" placeholder="Pl. brandelt keret kell (logo), mennyi nyomat, extra kérések..."></textarea>
-              </div>
-              <div>
-                <label>&nbsp;</label>
-                <button class="btn primary" type="submit" style="width:100%">Ajánlatot kérek</button>
-                <div class="tiny" style="margin-top:10px">
-                  Alternatíva: <a href="#" class="btn" style="padding:8px 10px; border-radius:12px">WhatsApp</a>
-                  <a href="#" class="btn" style="padding:8px 10px; border-radius:12px">Telefon</a>
-                </div>
-              </div>
-            </div>
-            <div class="tiny" id="formMsg" style="margin-top:10px"></div>
-          </form>
-        </div>
-
-        <div class="foot">
-          <div class="container" style="padding:0">
-            <div style="display:flex; gap:16px; flex-wrap:wrap; justify-content:space-between; align-items:flex-start">
-              <div>
-                <div style="font-weight:900; color:var(--text)">Instant Print</div>
-                <div>© <span id="year"></span> • Fotózás + helyszíni nyomtatás</div>
-              </div>
-              <div class="tiny" style="max-width:72ch">
-                <b>Adatkezelés:</b> A form demó módban nem küld el adatot. Élesítéskor tegyetek ki adatkezelési tájékoztatót
-                és (ha kell) fotózási hozzájárulás információt a rendezvény jellegétől függően.
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-    </div>
+    </details>
+    </section>
   </main>
 
+  <section id="quiz-result-modal" class="modal" aria-hidden="true">
+    <div class="modal-card">
+      <h2>Kvíz vége</h2>
+      <p id="quiz-result-line1"></p>
+      <p id="quiz-result-line2"></p>
+      <button id="quiz-close-btn" class="control" type="button">Rendben</button>
+    </div>
+  </section>
+
+  <script src="./szavak.js"></script>
   <script>
-    // Mobile menu
-    const hamburger = document.getElementById('hamburger');
-    const mobilePanel = document.getElementById('mobilePanel');
-    hamburger?.addEventListener('click', () => {
-      const open = mobilePanel.classList.toggle('open');
-      hamburger.setAttribute('aria-expanded', String(open));
+    const POOL_SIZE = 20;
+    const ROUND_SIZE = 10;
+
+    const STORAGE_KEYS = {
+      settings: "betukaland.settings",
+      progress: "betukaland.progress",
+      session: "betukaland.session",
+      quizHistory: "betukaland.quizHistory"
+    };
+
+    const state = {
+      mode: "game",
+      currentLevel: 1,
+      levelWords: [],
+      levelPointer: 0,
+      activePoolWords: [],
+      activePoolRemaining: [],
+      roundWords: [],
+      currentQuestionIndex: 0,
+      score: 0,
+      roundCorrect: 0,
+      combo: 0,
+      quizCorrect: 0,
+      locked: false,
+      settings: { ageMode: "kids", selectedGrade: 1, soundOn: false },
+      progress: { totalPoints: 0, streakDays: 0, bestStreak: 0, lastPlayedDate: "", byGrade: {} }
+    };
+
+    const els = {
+      modeBadge: document.getElementById("mode-badge"),
+      levelBadge: document.getElementById("level-badge"),
+      levelBadgeText: document.getElementById("level-badge-text"),
+      scoreBadge: document.getElementById("score-badge"),
+      scoreBadgeText: document.getElementById("score-badge-text"),
+      streakBadge: document.getElementById("streak-badge"),
+      streakBadgeText: document.getElementById("streak-badge-text"),
+      wordPrefix: document.getElementById("word-prefix"),
+      missingLetter: document.getElementById("missing-letter"),
+      wordSuffix: document.getElementById("word-suffix"),
+      btnJ: document.getElementById("btn-j"),
+      btnLy: document.getElementById("btn-ly"),
+      feedback: document.getElementById("feedback"),
+      score: document.getElementById("score"),
+      progress: document.getElementById("progress"),
+      combo: document.getElementById("combo"),
+      progressFill: document.getElementById("progress-fill"),
+      levelSelect: document.getElementById("level-select"),
+      ageModeSelect: document.getElementById("age-mode-select"),
+      newRoundBtn: document.getElementById("new-round-btn"),
+      quizBtn: document.getElementById("quiz-btn"),
+      backToGameBtn: document.getElementById("back-to-game-btn"),
+      resetStorageBtn: document.getElementById("reset-storage-btn"),
+      quizModal: document.getElementById("quiz-result-modal"),
+      quizResultLine1: document.getElementById("quiz-result-line1"),
+      quizResultLine2: document.getElementById("quiz-result-line2"),
+      quizCloseBtn: document.getElementById("quiz-close-btn")
+    };
+
+    function initAssetFallbacks() {
+      const images = document.querySelectorAll("img.asset-img[data-fallback-id]");
+      images.forEach((img) => {
+        const fallbackId = img.getAttribute("data-fallback-id");
+        const fallback = document.getElementById(fallbackId);
+        if (!fallback) return;
+
+        img.addEventListener("load", () => {
+          fallback.classList.add("hidden");
+        });
+        img.addEventListener("error", () => {
+          img.style.display = "none";
+          fallback.classList.remove("hidden");
+        });
+
+        if (img.complete) {
+          if (img.naturalWidth > 0) {
+            fallback.classList.add("hidden");
+          } else {
+            img.style.display = "none";
+            fallback.classList.remove("hidden");
+          }
+        }
+      });
+    }
+
+    function shuffle(arr) {
+      const copy = [...arr];
+      for (let i = copy.length - 1; i > 0; i -= 1) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function safeLoad(key, fallback) {
+      try {
+        const raw = localStorage.getItem(key);
+        if (!raw) return fallback;
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(fallback)) return Array.isArray(parsed) ? parsed : fallback;
+        return Object.assign({}, fallback, parsed);
+      } catch (_) {
+        return fallback;
+      }
+    }
+
+    function saveStorage(key, value) {
+      localStorage.setItem(key, JSON.stringify(value));
+    }
+
+    function normalizeWords(raw) {
+      return raw
+        .filter((item) => item && typeof item.szo === "string" && (item.helyes_betu === "j" || item.helyes_betu === "ly"))
+        .map((item, idx) => Object.assign({}, item, { _id: item.evfolyam + "-" + item.szo + "-" + idx }));
+    }
+
+    const allWords = normalizeWords(window.szavak || []);
+    const availableLevels = [...new Set(allWords.map((w) => Number(w.evfolyam)).filter((v) => Number.isFinite(v)))].sort((a, b) => a - b);
+
+    function getWordsForLevel(level) {
+      return allWords.filter((w) => Number(w.evfolyam) === Number(level));
+    }
+
+    function setFeedback(text, type = "neutral") {
+      els.feedback.textContent = text;
+      els.feedback.classList.remove("feedback-good", "feedback-bad");
+      if (type === "good") els.feedback.classList.add("feedback-good");
+      if (type === "bad") els.feedback.classList.add("feedback-bad");
+    }
+
+    function getTodayISO() {
+      return new Date().toISOString().slice(0, 10);
+    }
+
+    function dayDiff(fromISO, toISO) {
+      const from = new Date(fromISO + "T00:00:00");
+      const to = new Date(toISO + "T00:00:00");
+      return Math.round((to - from) / 86400000);
+    }
+
+    function touchStreak() {
+      const today = getTodayISO();
+      const last = state.progress.lastPlayedDate;
+      if (!last) {
+        state.progress.streakDays = 1;
+      } else {
+        const diff = dayDiff(last, today);
+        if (diff === 1) state.progress.streakDays += 1;
+        else if (diff > 1) state.progress.streakDays = 1;
+      }
+      state.progress.lastPlayedDate = today;
+      state.progress.bestStreak = Math.max(state.progress.bestStreak || 0, state.progress.streakDays || 0);
+      saveStorage(STORAGE_KEYS.progress, state.progress);
+    }
+
+    function prepareLevel(level) {
+      state.currentLevel = level;
+      state.levelWords = shuffle(getWordsForLevel(level));
+      state.levelPointer = 0;
+      state.activePoolWords = [];
+      state.activePoolRemaining = [];
+      state.roundWords = [];
+      state.currentQuestionIndex = 0;
+    }
+
+    function ensureActivePool() {
+      if (state.activePoolRemaining.length > 0 || state.activePoolWords.length > 0) return;
+      if (state.levelWords.length === 0) {
+        state.levelWords = shuffle(getWordsForLevel(state.currentLevel));
+        state.levelPointer = 0;
+      }
+      if (state.levelPointer >= state.levelWords.length) {
+        state.levelWords = shuffle(getWordsForLevel(state.currentLevel));
+        state.levelPointer = 0;
+      }
+      const end = Math.min(state.levelPointer + POOL_SIZE, state.levelWords.length);
+      const nextPool = state.levelWords.slice(state.levelPointer, end);
+      state.levelPointer = end;
+      state.activePoolWords = shuffle(nextPool);
+      state.activePoolRemaining = [...state.activePoolWords];
+    }
+
+    function buildRoundWords() {
+      ensureActivePool();
+      const size = Math.min(ROUND_SIZE, state.activePoolRemaining.length);
+      state.roundWords = state.activePoolRemaining.slice(0, size);
+      state.activePoolRemaining = state.activePoolRemaining.slice(size);
+      state.currentQuestionIndex = 0;
+      state.roundCorrect = 0;
+    }
+
+    function splitWord(word, letter) {
+      const idx = word.indexOf(letter);
+      if (idx < 0) return { prefix: word, suffix: "" };
+      return { prefix: word.slice(0, idx), suffix: word.slice(idx + letter.length) };
+    }
+
+    function getCurrentWord() {
+      return state.roundWords[state.currentQuestionIndex] || null;
+    }
+
+    function updateHeader() {
+      els.modeBadge.textContent = state.mode === "quiz" ? "Mód: Kvíz" : "Mód: Játék";
+      els.levelBadgeText.textContent = state.currentLevel + ". osztály";
+      els.scoreBadgeText.textContent = (state.progress.totalPoints || 0) + " pont";
+      els.streakBadgeText.textContent = (state.progress.streakDays || 0) + " sorozat";
+      els.backToGameBtn.disabled = state.mode !== "quiz";
+      els.newRoundBtn.disabled = state.locked || state.mode === "quiz";
+      els.quizBtn.disabled = state.locked || state.mode === "quiz";
+      els.levelSelect.disabled = state.locked || state.mode === "quiz";
+      els.ageModeSelect.disabled = state.locked || state.mode === "quiz";
+      els.resetStorageBtn.disabled = state.locked;
+    }
+
+    function updateCounters() {
+      const total = state.roundWords.length || ROUND_SIZE;
+      const shownCurrent = Math.min(state.currentQuestionIndex + 1, total);
+      const pointsNow = state.mode === "quiz" ? state.quizCorrect : state.score;
+      els.score.textContent = "⭐ Pontjaid: " + pointsNow + " / " + total;
+      els.progress.textContent = "Kérdés: " + shownCurrent + "/" + total;
+      els.combo.textContent = "Hibátlan sorozat: " + state.combo;
+      const fill = total > 0 ? (Math.min(state.currentQuestionIndex, total) / total) * 100 : 0;
+      els.progressFill.style.width = fill + "%";
+    }
+
+    function applyAgeMode() {
+      const btnSize = state.settings.ageMode === "kids" ? "98px" : "84px";
+      els.btnJ.style.minHeight = btnSize;
+      els.btnLy.style.minHeight = btnSize;
+    }
+
+    function renderWord() {
+      const word = getCurrentWord();
+      if (!word) {
+        els.wordPrefix.textContent = "";
+        els.missingLetter.textContent = "_";
+        els.wordSuffix.textContent = "";
+        return;
+      }
+      const parts = splitWord(word.szo, word.helyes_betu);
+      els.wordPrefix.textContent = parts.prefix;
+      els.missingLetter.textContent = "_";
+      els.wordSuffix.textContent = parts.suffix;
+      els.missingLetter.classList.remove("shake", "word-pop");
+    }
+
+    function render() {
+      updateHeader();
+      updateCounters();
+      renderWord();
+      saveStorage(STORAGE_KEYS.session, {
+        currentLevel: state.currentLevel,
+        mode: state.mode,
+        score: state.score,
+        combo: state.combo
+      });
+    }
+
+    function setButtonsDisabled(disabled) {
+      els.btnJ.disabled = disabled;
+      els.btnLy.disabled = disabled;
+      state.locked = disabled;
+      updateHeader();
+    }
+
+    function fireConfetti() {
+      const colors = ["#4DA6FF", "#4CD964", "#FFB020", "#FF4D4F", "#1E88E5"];
+      for (let i = 0; i < 28; i += 1) {
+        const piece = document.createElement("span");
+        piece.className = "confetti";
+        piece.style.left = (Math.random() * 100) + "vw";
+        piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+        piece.style.animationDuration = (1.0 + Math.random() * 0.9) + "s";
+        piece.style.opacity = String(0.75 + Math.random() * 0.25);
+        document.body.appendChild(piece);
+        setTimeout(() => piece.remove(), 2200);
+      }
+    }
+
+    function animateWrong(selected, btnEl) {
+      els.missingLetter.textContent = selected;
+      els.missingLetter.classList.add("shake");
+      btnEl.classList.add("wrong", "shake");
+      setTimeout(() => {
+        btnEl.classList.remove("wrong", "shake");
+        els.missingLetter.classList.remove("shake");
+        els.missingLetter.textContent = "_";
+      }, 450);
+    }
+
+    function animateCorrect(letter, btnEl) {
+      els.missingLetter.textContent = letter;
+      els.missingLetter.classList.add("word-pop");
+      btnEl.classList.add("correct");
+      setTimeout(() => {
+        btnEl.classList.remove("correct");
+        els.missingLetter.classList.remove("word-pop");
+      }, 330);
+    }
+
+    function moveNextQuestion() {
+      state.currentQuestionIndex += 1;
+      if (state.currentQuestionIndex >= state.roundWords.length) {
+        if (state.mode === "quiz") {
+          finishQuiz();
+          return;
+        }
+
+        const byGrade = state.progress.byGrade || {};
+        if (!byGrade[state.currentLevel]) byGrade[state.currentLevel] = { rounds: 0, correct: 0 };
+        byGrade[state.currentLevel].rounds += 1;
+        byGrade[state.currentLevel].correct += state.roundCorrect;
+        state.progress.byGrade = byGrade;
+        saveStorage(STORAGE_KEYS.progress, state.progress);
+
+        setFeedback("Kör vége. Indíthatsz új 10 szavas kört.", "good");
+        render();
+        return;
+      }
+
+      setFeedback("Melyik betű hiányzik?");
+      render();
+      setButtonsDisabled(false);
+    }
+
+    function onAnswer(selected) {
+      if (state.locked) return;
+      const word = getCurrentWord();
+      if (!word) return;
+      const correct = word.helyes_betu;
+      const selectedBtn = selected === "j" ? els.btnJ : els.btnLy;
+
+      if (state.mode === "quiz") {
+        setButtonsDisabled(true);
+        if (selected === correct) {
+          state.quizCorrect += 1;
+          setFeedback("Helyes!", "good");
+        } else {
+          setFeedback("Hibás. A helyes betű: " + correct, "bad");
+        }
+        animateCorrect(correct, correct === "j" ? els.btnJ : els.btnLy);
+        updateCounters();
+        setTimeout(() => {
+          setButtonsDisabled(false);
+          moveNextQuestion();
+        }, 900);
+        return;
+      }
+
+      if (selected === correct) {
+        setButtonsDisabled(true);
+        state.score += 1;
+        state.roundCorrect += 1;
+        state.combo += 1;
+        state.progress.totalPoints = (state.progress.totalPoints || 0) + 1;
+        saveStorage(STORAGE_KEYS.progress, state.progress);
+
+        animateCorrect(correct, selectedBtn);
+        fireConfetti();
+        setFeedback("Ügyes vagy!", "good");
+        updateCounters();
+
+        setTimeout(() => {
+          setButtonsDisabled(false);
+          moveNextQuestion();
+        }, 820);
+      } else {
+        state.combo = 0;
+        setFeedback("Ez most nem jó. Próbáld újra!", "bad");
+        animateWrong(selected, selectedBtn);
+        updateCounters();
+      }
+    }
+
+    function startNewGameRound() {
+      if (state.locked) return;
+      state.mode = "game";
+      if (state.activePoolRemaining.length === 0 && state.activePoolWords.length > 0) {
+        state.activePoolWords = [];
+      }
+
+      buildRoundWords();
+      if (state.roundWords.length === 0) {
+        setFeedback("Nincs elérhető szó ebben a körben.", "bad");
+        render();
+        return;
+      }
+
+      state.score = 0;
+      setFeedback("Melyik betű hiányzik?");
+      setButtonsDisabled(false);
+      render();
+    }
+
+    function startQuiz() {
+      if (state.locked) return;
+      state.mode = "quiz";
+      ensureActivePool();
+      const source = state.activePoolWords.length ? state.activePoolWords : state.levelWords;
+      state.roundWords = shuffle(source).slice(0, Math.min(ROUND_SIZE, source.length));
+      state.currentQuestionIndex = 0;
+      state.quizCorrect = 0;
+
+      if (state.roundWords.length === 0) {
+        setFeedback("Nem indítható kvíz: nincs szó.", "bad");
+        state.mode = "game";
+      } else {
+        setFeedback("Kvíz mód: nincs újrapróba, minden válasz számít.");
+      }
+
+      setButtonsDisabled(false);
+      render();
+    }
+
+    function finishQuiz() {
+      const total = state.roundWords.length || 1;
+      const percent = Math.round((state.quizCorrect / total) * 100);
+      const message = percent >= 90 ? "Kiemelkedő eredmény!" : (percent < 60 ? "Gyakoroljunk még egy kicsit!" : "Szép munka!");
+
+      els.quizResultLine1.textContent = "Eredmény: " + state.quizCorrect + "/" + total + " (" + percent + "%)";
+      els.quizResultLine2.textContent = message;
+
+      const hist = safeLoad(STORAGE_KEYS.quizHistory, []);
+      hist.unshift({ date: getTodayISO(), level: state.currentLevel, correct: state.quizCorrect, total: total, percent: percent });
+      saveStorage(STORAGE_KEYS.quizHistory, hist.slice(0, 20));
+
+      els.quizModal.classList.add("show");
+      els.quizModal.setAttribute("aria-hidden", "false");
+      setButtonsDisabled(true);
+    }
+
+    function closeQuizModalAndReturn() {
+      els.quizModal.classList.remove("show");
+      els.quizModal.setAttribute("aria-hidden", "true");
+      state.mode = "game";
+      state.roundWords = [];
+      state.currentQuestionIndex = 0;
+      setButtonsDisabled(false);
+      startNewGameRound();
+    }
+
+    function renderLevelOptions() {
+      els.levelSelect.innerHTML = "";
+      availableLevels.forEach((level) => {
+        const opt = document.createElement("option");
+        opt.value = String(level);
+        opt.textContent = level + ". évfolyam";
+        els.levelSelect.appendChild(opt);
+      });
+      els.levelSelect.value = String(state.currentLevel);
+    }
+
+    function resetStorage() {
+      localStorage.removeItem(STORAGE_KEYS.settings);
+      localStorage.removeItem(STORAGE_KEYS.progress);
+      localStorage.removeItem(STORAGE_KEYS.session);
+      localStorage.removeItem(STORAGE_KEYS.quizHistory);
+      location.reload();
+    }
+
+    function initFromStorage() {
+      state.settings = safeLoad(STORAGE_KEYS.settings, state.settings);
+      state.progress = safeLoad(STORAGE_KEYS.progress, state.progress);
+      const session = safeLoad(STORAGE_KEYS.session, {});
+
+      const initialLevel = Number(state.settings.selectedGrade || session.currentLevel || availableLevels[0] || 1);
+      prepareLevel(initialLevel);
+      touchStreak();
+
+      renderLevelOptions();
+      els.ageModeSelect.value = state.settings.ageMode;
+      applyAgeMode();
+    }
+
+    function init() {
+      if (!Array.isArray(window.szavak) || window.szavak.length === 0) {
+        setFeedback("A szólista nem tölthető be.", "bad");
+        return;
+      }
+      initAssetFallbacks();
+      initFromStorage();
+      startNewGameRound();
+    }
+
+    els.btnJ.addEventListener("click", () => onAnswer("j"));
+    els.btnLy.addEventListener("click", () => onAnswer("ly"));
+    els.newRoundBtn.addEventListener("click", startNewGameRound);
+    els.quizBtn.addEventListener("click", startQuiz);
+
+    els.levelSelect.addEventListener("change", (event) => {
+      const nextLevel = Number(event.target.value);
+      if (!Number.isFinite(nextLevel)) return;
+      state.settings.selectedGrade = nextLevel;
+      saveStorage(STORAGE_KEYS.settings, state.settings);
+      state.mode = "game";
+      state.score = 0;
+      state.combo = 0;
+      prepareLevel(nextLevel);
+      setFeedback(nextLevel + ". évfolyam kiválasztva.", "good");
+      startNewGameRound();
     });
-    mobilePanel?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
-      mobilePanel.classList.remove('open');
-      hamburger.setAttribute('aria-expanded', 'false');
-    }));
 
-    // Calculator (simple, editable)
-    function clamp(n, a, b){ return Math.max(a, Math.min(b, n)); }
+    els.ageModeSelect.addEventListener("change", (event) => {
+      state.settings.ageMode = event.target.value;
+      saveStorage(STORAGE_KEYS.settings, state.settings);
+      applyAgeMode();
+    });
 
-    function estimate() {
-      const type = document.getElementById('eventType').value;
-      const hours = Number(document.getElementById('hours').value || 0);
-      const guests = Number(document.getElementById('guests').value || 0);
-      const prints = Number(document.getElementById('prints').value || 0);
-      const branding = Number(document.getElementById('branding').value || 0);
-      const assistant = Number(document.getElementById('assistant').value || 0);
+    els.backToGameBtn.addEventListener("click", () => {
+      if (state.mode !== "quiz") return;
+      state.mode = "game";
+      state.roundWords = [];
+      state.currentQuestionIndex = 0;
+      setFeedback("Visszaléptél játék módba.");
+      startNewGameRound();
+    });
 
-      // Base hourly ranges (HUF) - adjust freely
-      let baseMin = 25000, baseMax = 45000; // per hour base service
-      if(type === "wedding"){ baseMin = 30000; baseMax = 52000; }
-      if(type === "corporate"){ baseMin = 32000; baseMax = 56000; }
-      if(type === "prom"){ baseMin = 28000; baseMax = 50000; }
-      if(type === "festival"){ baseMin = 38000; baseMax = 65000; }
+    els.resetStorageBtn.addEventListener("click", resetStorage);
+    els.quizCloseBtn.addEventListener("click", closeQuizModalAndReturn);
+    els.quizModal.addEventListener("click", (event) => {
+      if (event.target === els.quizModal) closeQuizModalAndReturn();
+    });
 
-      const hoursAdj = clamp(hours, 2, 12);
-      const printsAdj = clamp(prints, 0, 9999);
-
-      // Print cost + handling margin
-      const printUnit = 450;   // charge per included print equivalence
-      const printMin = printsAdj * (printUnit * 0.35);
-      const printMax = printsAdj * (printUnit * 0.55);
-
-      // Guests factor (more flow complexity)
-      const paxFactor = 1 + clamp(guests, 0, 600) / 1200;
-
-      // Branding / assistant add-ons
-      const brandingFeeMin = branding ? 12000 : 0;
-      const brandingFeeMax = branding ? 25000 : 0;
-      const assistantFeeMin = assistant ? 25000 : 0;
-      const assistantFeeMax = assistant ? 45000 : 0;
-
-      let min = (baseMin * hoursAdj + printMin + brandingFeeMin + assistantFeeMin) * paxFactor;
-      let max = (baseMax * hoursAdj + printMax + brandingFeeMax + assistantFeeMax) * paxFactor;
-
-      // Round
-      min = Math.round(min / 5000) * 5000;
-      max = Math.round(max / 5000) * 5000;
-
-      document.getElementById('priceRange').textContent = `${min.toLocaleString('hu-HU')} – ${max.toLocaleString('hu-HU')} Ft`;
-      document.getElementById('priceDetails').textContent =
-        `Bemenetek: ${hoursAdj} óra • ${guests} fő • ${printsAdj} nyomat • keret/logo: ${branding ? "igen" : "nem"} • asszisztens: ${assistant ? "igen" : "nem"}.`;
-    }
-
-    document.getElementById('calcBtn')?.addEventListener('click', estimate);
-    // Initial estimate
-    estimate();
-
-    // Fake form submit (demo)
-    function fakeSubmit(e){
-      e.preventDefault();
-      const msg = document.getElementById('formMsg');
-      msg.style.color = 'var(--muted)';
-      msg.textContent = 'Köszi! Ez a demó oldal nem küld emailt. Élesítéskor kösd be a formot (pl. Formspree, Netlify Forms, saját backend).';
-      return false;
-    }
-    window.fakeSubmit = fakeSubmit;
-
-    document.getElementById('year').textContent = new Date().getFullYear();
+    init();
   </script>
 </body>
 </html>
